@@ -1,0 +1,12 @@
+astropy==6.0.1
+h5py==3.12.1
+matplotlib==3.9.2
+numpy==1.26.4
+opencv-python==4.10.0.84
+pandas==2.2.3
+reproject==0.13.0
+scikit-learn==1.4.1.post1
+scipy==1.13.1
+seaborn==0.13.2
+sunpy==5.1.5
+tensorflow==2.9.0
