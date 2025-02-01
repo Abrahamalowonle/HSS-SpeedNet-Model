@@ -17,17 +17,16 @@ import SpeedNet_model_prep
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
-from sklearn.metrics import mean_squared_error, mean_absolute_error, root_mean_squared_error
+from tensorflow.keras.losses import MeanSquaredError, MeanAbsoluteError
 from keras.models import load_model
 
 
-def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_date, train_end_date, test_start_date, test_end_date, model_path):
+def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_date, train_end_date, test_start_date, test_end_date, model_path, batch_opt=None):
     """
     SpeedNet_model training function.
     This function calls the necessary function for the SpeedNet training of the maps (either SpeedNet-EUV or SpeedNet-BM).
@@ -65,10 +64,10 @@ def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_dat
                                                  model_path="data/maximum")
     
     """
-    
     n_steps = 1
     # The Timestep is 1. while the Time delay ranges from 0 to 4 index. (i.e delay of 1 to 5)
     for num_delay in range(5):
+        
         df, velocity_train, velocity_test, std_velocity_test, train_speed_dates, test_speed_dates, full_icme_list = SpeedNet_model_prep.load_df(
                                                                                                                     path, train_start_date,
                                                                                                                     train_end_date, test_start_date, 
@@ -95,6 +94,7 @@ def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_dat
     
         train_images, test_images =  SpeedNet_model_prep.train_test_set(img_train_path, img_test_path,
                                                                 New_Train_Map_date, New_Test_Map_date)
+
         n_splits = 5
         for fold_index in range(5):
             num_samples = len(train_images)
@@ -109,20 +109,19 @@ def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_dat
             
             y_speed_train, y_speed_val = np.concatenate([train_velocity_out[:val_start], train_velocity_out[val_end:num_samples-1]]), train_velocity_out[val_start:val_end]
            
-            if len(X_images_train.shape) < 4:
-                return f"Incompatible shape."
-    
-            # If Shape[3] == 1, Utilized SpeedNet-BM model
-            if X_images_train.shape[3] == 1:
+            if len(X_images_train.shape) == 3 and X_images_train.shape[1:] == (256, 256):
                 combined_model =  SpeedNet_model_prep.SpeedNet_BM()
-                
-            # If Shape[3] == 3, Utilized SpeedNet-EUV model
-            elif X_images_train.shape[3] == 3:
-                combined_model =  SpeedNet_model_prep.SpeedNet_EUV()
-                
-            else:
-                return "Shape doesn't match the expected values."
 
+            elif len(X_images_train.shape) == 4 and X_images_train.shape[1:] == (256, 256, 3):
+                if batch_opt == False:
+                    combined_model =  SpeedNet_model_prep.SpeedNet_WAve()
+                else:
+                    combined_model =  SpeedNet_model_prep.SpeedNet_EUV()
+
+            else:
+                print(f"Shape {X_images_train.shape} is not supported.")
+                
+   
             # Compile the combined model
             initial_learning_rate = 0.0001
             optimizer = Adam(learning_rate=initial_learning_rate)
@@ -155,6 +154,7 @@ def SpeedNet_model_training(path, img_train_path, img_test_path, train_start_dat
             ax.legend()
             plt.savefig(f"{model_path}/Loss_curve_for_fold_{fold_index + 1}_timestep_{n_steps}_and_delay_{num_delay}.png");
             plt.close()
+            
 
 def SpeedNet_model_testing(path, img_train_path, img_test_path, train_start_date, train_end_date, test_start_date, test_end_date, model_path):
     """
@@ -168,7 +168,7 @@ def SpeedNet_model_testing(path, img_train_path, img_test_path, train_start_date
         The root directory or file path where the Filtered SW, standard deviation of solar wind, ICME_event files are located.
     img_train_path : str
         The root directory or file path where the Map training set are located.
-    img_test_path : 
+    img_test_path : str
         The root directory or file path where the Map testing set are located.
     train_start_date : str
         The start time of the training period, formatted as a string (e.g., "YYYY-MM-DD").
@@ -234,9 +234,9 @@ def SpeedNet_model_testing(path, img_train_path, img_test_path, train_start_date
 
             predictions = loaded_model.predict(test_images)
             
-            best_mae = mean_absolute_error(tf.squeeze(test_velocity_out), tf.squeeze(predictions))
-            best_mse = mean_squared_error(tf.squeeze(test_velocity_out), tf.squeeze(predictions))
-            best_rmse = root_mean_squared_error(tf.squeeze(test_velocity_out), tf.squeeze(predictions))
+            best_mae = MeanAbsoluteError()(test_velocity_out, predictions)
+            best_mse = MeanSquaredError()(test_velocity_out, predictions)
+            best_rmse = tf.sqrt(best_mse)
             corr_matrix = np.corrcoef(tf.squeeze(test_velocity_out), tf.squeeze(predictions))
             corr_coef = corr_matrix[0, 1]
             
@@ -281,6 +281,7 @@ def SpeedNet_model_testing(path, img_train_path, img_test_path, train_start_date
 
             fig.suptitle(f"Solar Wind Prediction Fold_{fold_index + 1}_timestep_{n_steps}_and_delay_{num_delay}", fontsize = 16, fontweight = "bold");
 
+            ax.plot(pred_df['date'],pred_df['test_original'], linestyle='-', color='r', label='Observed')
             ax.plot(pred_df['date'],pred_df['test_predicted'], linestyle='-', color='g', label= f'Prediction MAE:{best_mae} \n RMSE: {best_rmse} \n Corr: {corr_coef:.3f} ± {pearson_uncertainty:.3f}')
 
             ax.grid(False)
@@ -290,13 +291,6 @@ def SpeedNet_model_testing(path, img_train_path, img_test_path, train_start_date
             plt.savefig(f"{model_path}/predictions_for_fold_{fold_index + 1}_and_step_{n_steps}_and_delay_{num_delay}.png");
             plt.close()
             
-
-            plt.figure(figsize=(8, 6))
-            sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", vmin=0, vmax=1, cbar=True)
-            plt.title(f'Correlation Matrix for Fold {fold_index + 1} and Step {n_steps} and Delay {num_delay}')
-
-            plt.savefig(f"{model_path}/Pearson_corr_for_fold_{fold_index + 1}_and_step_{n_steps}_and_delay_{num_delay}.png");
-            plt.close()
             
             row = ((fold_index + 1), n_steps, (num_delay+1), best_mae, f"{best_mse:.3f} ± {mse_uncertainty:.3f}", f"{best_rmse:.3f} ± {rmse_uncertainty:.3f}", f"{corr_coef:.3f} ± {pearson_uncertainty:.3f}", f"{threat_score}", f"{reduced_chi_squ}") 
             full_metric_list.append(row)

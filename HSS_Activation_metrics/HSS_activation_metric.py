@@ -74,7 +74,7 @@ def HSS_activation_csv(channel,full_period_test_velocity_out, full_period_test_i
         for i in range(len(Longer_HSS_full_period_random_selection)):
             Hss_full_period_img_cam, Hss_full_period_value = gradcamm(Longer_HSS_full_period_random_selection[i].reshape(1,256, 256, 1), best_model_full_period)
             SN_list.append(i+1)
-            wind_date.append(list(full_period_Test_timeseries_date)[longer_HSS_full_period_indices_rand[i]+(full_period_num_delay+1)])
+            wind_date.append(list(full_period_Test_timeseries_date)[longer_HSS_full_period_indices_rand[i]])
             Mean_list.append(np.mean(Hss_full_period_img_cam))
             max_list.append(np.max(Hss_full_period_img_cam))
             min_list.append(np.min(Hss_full_period_img_cam))
@@ -85,7 +85,7 @@ def HSS_activation_csv(channel,full_period_test_velocity_out, full_period_test_i
         for i in range(len(Longer_HSS_full_period_random_selection)):
             Hss_full_period_img_cam, Hss_full_period_value = gradcamm(Longer_HSS_full_period_random_selection[i].reshape(1,256, 256, 3), best_model_full_period)
             SN_list.append(i+1)
-            wind_date.append(list(full_period_Test_timeseries_date)[longer_HSS_full_period_indices_rand[i]+(full_period_num_delay+1)])
+            wind_date.append(list(full_period_Test_timeseries_date)[longer_HSS_full_period_indices_rand[i]])
             Mean_list.append(np.mean(Hss_full_period_img_cam))
             max_list.append(np.max(Hss_full_period_img_cam))
             min_list.append(np.min(Hss_full_period_img_cam))

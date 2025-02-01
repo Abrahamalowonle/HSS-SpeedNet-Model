@@ -59,7 +59,7 @@ def load_df(path, train_start_date, train_end_date, test_start_date, test_end_da
         )
     """
     df = pd.read_csv(f'{path}/Omni_velocity.csv')
-
+    
     velocity_train_mask= (df["DATE"] >= f"{train_start_date}") & (df["DATE"] <= f"{train_end_date}") 
     velocity_train = df.loc[velocity_train_mask]
    
@@ -500,6 +500,52 @@ def SpeedNet_EUV():
     x = MaxPooling2D((2, 2))(x)
     x = Conv2D(128, (3, 3), activation='relu')(x)
     x = BatchNormalization()(x)
+    x = MaxPooling2D((2, 2))(x)
+    cnn_output = Flatten()(x)
+    
+    # Define the LSTM and FFNN Layer 
+    cnn_output_reshaped = Reshape((1, cnn_output.shape[1]))(cnn_output)
+    lstm_output = LSTM(30, activation='relu')(cnn_output_reshaped)
+    dense_lay = Dense(200, activation='relu')(lstm_output)
+    lstm_output = Dense(1, activation='linear')(dense_lay)
+    
+    # Combine CNN and LSTM into a single model
+    combined_model = Model(inputs=cnn_input, outputs=lstm_output)
+    return combined_model
+
+
+def SpeedNet_WAve():
+    """
+    SpeedNet-WAve model. 
+    Contains CNN-SpeedNet (LSTM-FFNN) architecture for spatial convolution of a EUV map with shape 256, 256, 3
+    This model considers that each EUV(171, 193, 304) should be treated as a function of it' features.
+    Therefore It must should not be normalized with other Wavelengths
+    
+    Parameters:
+    ----------
+    None.
+    
+    Returns:
+    ----------
+    combined_model : Combine model architecture
+    
+    Examples:
+    ---------
+    >>> combined_model = SpeedNet_WAve()
+    """
+    tf.keras.backend.clear_session()
+    random.seed(42)
+    np.random.seed(42)
+    tf.random.set_seed(42)
+    
+    cnn_input = Input(shape=(256, 256, 3))
+    x = Conv2D(16, (3, 3), activation='relu')(cnn_input)
+    x = MaxPooling2D((2, 2))(x)
+    x = Conv2D(32, (3, 3), activation='relu')(x)
+    x = MaxPooling2D((2, 2))(x)
+    x = Conv2D(64, (3, 3), activation='relu')(x)
+    x = MaxPooling2D((2, 2))(x)
+    x = Conv2D(128, (3, 3), activation='relu')(x)
     x = MaxPooling2D((2, 2))(x)
     cnn_output = Flatten()(x)
     
