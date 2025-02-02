@@ -57,12 +57,9 @@ npm install # or pip install -r requirements.txt, etc.
 ```
 ---
 
-## Usage
-
-How to use the project:
+## We utilizing WSL
 
 ```bash
-#Note we recommend utilizing WSL.
 # To Utilize WSL
 conda create --name env_tf python==3.9.19
 conda activate env_tf
@@ -72,6 +69,12 @@ echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/' > $CONDA_PREFI
 pip install --upgrade pip
 # pip install tensorflow==2.9
 ```
+---
+
+## Usage
+
+How to use the project:
+```bash
 
 ---
 
