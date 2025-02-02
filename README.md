@@ -74,8 +74,19 @@ pip install --upgrade pip
 ## Usage
 
 How to use the project:
-```bash
 
+1. Process the Solar wind speed using SW_Processing.
+2. Process the Maps using Image_Preprocess.
+3. Perform the Analysis:
+    a. SpeedNet_EUV for the Three Channel EUV Model.
+    b. SpeedNet_BM for the Binary Map Model.
+4. HSEMETRIC contains metrics for analyzing the Threat Score.
+5. To observe the Activation of the Model, utilize HSS ACtivation metrics.
+6. For Visualizing the Model Plot:
+    HSS_Activation - HSSs_Activation_comparison_Analysis.
+    Timeseries and GradCam for SpeedNet_BM and SpeedNet_EUV.
+
+```
 ---
 
 ## Contributing
