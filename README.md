@@ -54,7 +54,15 @@ cd HSS-SpeedNet-Model
 # Install dependencies
 npm install # or pip install -r requirements.txt, etc.
 
-#Note we, encourage using GPU. (We utilized WSL.)
+```
+---
+
+## Usage
+
+How to use the project:
+
+```bash
+#Note we recommend utilizing WSL.
 # To Utilize WSL
 conda create --name env_tf python==3.9.19
 conda activate env_tf
@@ -63,19 +71,6 @@ mkdir -p $CONDA_PREFIX/etc/conda/activate.d
 echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/' > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 pip install --upgrade pip
 # pip install tensorflow==2.9
-```
----
-
-## Usage
-
-Explain how to use the project:
-
-```bash
-# Run the project
-npm start # or python main.py, etc.
-
-# Example usage
-./run-script.sh --option value
 ```
 
 ---
