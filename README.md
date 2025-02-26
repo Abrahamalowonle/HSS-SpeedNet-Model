@@ -32,7 +32,7 @@ Solutions:
 
 ## Installation
 
-Follow these steps to install the project:
+To set up the environment and install dependencies from the `environment.yml` file, follow these steps:
 
 ```bash
 # Clone the repository
@@ -41,23 +41,25 @@ git clone https://github.com/Abrahamalowonle/HSS-SpeedNet-Model.git
 # Navigate to the project directory
 cd HSS-SpeedNet-Model
 
-# Install dependencies
-# Project Name
 
-## Installation
-
-To set up the environment and install dependencies from the `environment.yml` file, follow these steps:
-
+```
 ### **1. Install Conda (If Not Already Installed)**
 If you haven't installed Conda, download and install **[Miniconda](https://docs.conda.io/en/latest/miniconda.html)** or **[Anaconda](https://www.anaconda.com/)**.
 
+For WSL users, install Miniconda/Anaconda using:
+
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+
+```
 ### **2. Create a New Environment from `environment.yml`**
 Run the following command to create a new Conda environment:
+
 ```bash
 conda env create -f environment.yml
 
-
-```
+````
 ---
 
 ## Usage
