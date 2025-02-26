@@ -8,11 +8,9 @@ This is a follow up resource for our Research Publication.
 
 ## Table of Contents
 
-- [About the Project](#about-SpeedNet-Model)
-- [Features](#features)
+- [About SpeedNet Model](#about-SpeedNet-Model)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
 ---
@@ -23,21 +21,13 @@ The structure of the sun and it ability to influence the propagation of space pl
 
 Solutions:
 
-- Mapping Correctio/Offlimb-removal.
+- Mapping Correction/Offlimb-removal.
 - ICME Eliminnation and Map adaptation based on delays and folds.
 - Prediction of High Speed Streams(HSSs).
 - Quantitative Evaluation of the Model Performance.
 - Grad-Cam Observation of the model performance.
 
 ![Project Banner](./Image_processes.png)
----
-
-## Features
-
-- Feature 1: Description
-- Feature 2: Description
-- Feature 3: Description
-
 ---
 
 ## Installation
@@ -57,20 +47,6 @@ npm install # or pip install -r requirements.txt, etc.
 ```
 ---
 
-## We utilizing WSL
-
-```bash
-# To Utilize WSL
-conda create --name env_tf python==3.9.19
-conda activate env_tf
-conda install -c conda-forge cudatoolkit=11.2.2 cudnn=8.1.0
-mkdir -p $CONDA_PREFIX/etc/conda/activate.d
-echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREFIX/lib/' > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-pip install --upgrade pip
-# pip install tensorflow==2.9
-```
----
-
 ## Usage
 
 How to use the project:
@@ -85,18 +61,6 @@ How to use the project:
 6. For Visualizing the Model Plot:
     - HSS_Activation - HSSs_Activation_comparison_Analysis.
     - Timeseries and GradCam for SpeedNet_BM and SpeedNet_EUV.
----
-
-## Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch-name`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature-branch-name`).
-5. Open a Pull Request.
-
 ---
 
 ## License
