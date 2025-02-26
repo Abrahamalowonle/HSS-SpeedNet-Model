@@ -42,7 +42,20 @@ git clone https://github.com/Abrahamalowonle/HSS-SpeedNet-Model.git
 cd HSS-SpeedNet-Model
 
 # Install dependencies
-npm install # or pip install -r requirements.txt, etc.
+# Project Name
+
+## Installation
+
+To set up the environment and install dependencies from the `environment.yml` file, follow these steps:
+
+### **1. Install Conda (If Not Already Installed)**
+If you haven't installed Conda, download and install **[Miniconda](https://docs.conda.io/en/latest/miniconda.html)** or **[Anaconda](https://www.anaconda.com/)**.
+
+### **2. Create a New Environment from `environment.yml`**
+Run the following command to create a new Conda environment:
+```bash
+conda env create -f environment.yml
+
 
 ```
 ---
