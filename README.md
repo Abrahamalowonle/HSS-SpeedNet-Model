@@ -1,50 +1,27 @@
 # HSS-SpeedNet-Model
-
-![Project Banner](./aia_map.png)
-
 > Prediction of High-Speed Solar Wind Streams using SDO/AIA EUV MAPs/BINARY Maps.
 This is a follow up resource for our Research Publication.
----
 
+---
 ## Table of Contents
 
 - [About SpeedNet Model](#about-SpeedNet-Model)
-- [Files](#Files).
 - [SpeedNet Docker Image README](#SpeedNet-DOCKER-README)
+- [Repository overview](#Repository-overview)
+- [Docker Quick start](#Docker-Quick-start)
+- [Citation](#Citation)
+- [Github Files Description](#Github-Files-Description)
 - [License](#license)
 ---
 
 ## About SpeedNet Model
 
-The structure of the sun and it ability to influence the propagation of space plasma parcel, realised that different dynamo effect in the sun leads to the generation of solar wind in the interplanetary. The presence of CME (Coronal Mass Ejection) would lead to an abrupt change in the magnitude and effect of solar wind parcel in the interplanetary and near earth. Also, the presence of Coronal hole could create the CIR (Corotating Interaction region) and the SIR (Stream Interaction region), which distort and changes the flow, direction and the magnitude of the Solar wind parcel. This study therefore enacts the prediction of solar wind speed not associated with ICMEs (Interplanetary Coronal Mass Ejection) using Convolution Neural Network (CNN) during the different phases of the solar cycle (SC 24 and 25). 
-
-Solutions:
-
-- Mapping Correction/Offlimb-removal.
-- ICME Eliminnation and Map adaptation based on delays and folds.
-- Prediction of High Speed Streams(HSSs).
-- Quantitative Evaluation of the Model Performance.
-- Grad-Cam Observation of the model performance.
+The structure of the sun and it ability to influence the propagation of space plasma parcel, realised that different dynamo effect in the sun leads to the generation of solar wind in the interplanetary. The presence of CME (Coronal Mass Ejection) would lead to an abrupt change in the magnitude and effect of solar wind parcel in the interplanetary and near earth. Also, the presence of Coronal hole could create the CIR (Corotating Interaction region) and the SIR (Stream Interaction region), which distort and changes the flow, direction and the magnitude of the Solar wind parcel. This study therefore enacts the prediction of solar wind speed not associated with ICMEs (Interplanetary Coronal Mass Ejection) strictly from Solar atmospheric Imagery. 
 
 ![Project Banner](./Image_processes.png)
 ---
-## Files
 
-Find in this repo the files used for the analysis:
-
-1. Process the Solar wind speed using SW_Processing.
-2. Process the Maps using Image_Preprocess.
-3. Perform the Analysis:
-    - a. SpeedNet_EUV for the Three Channel EUV Model.
-    - b. SpeedNet_BM for the Binary Map Model.
-4. HSEMETRIC contains metrics for analyzing the Threat Score.
-5. To observe the Activation of the Model, utilize HSS ACtivation metrics.
-6. For Visualizing the Model Plot:
-    - HSS_Activation - HSSs_Activation_comparison_Analysis.
-    - Timeseries and GradCam for SpeedNet_BM and SpeedNet_EUV.
----
-
-# SpeedNet Docker Image README
+## SpeedNet Docker Image README
 
 **Deep-learning based prediction of high-speed solar wind streams strictly from solar atmosphere imagery, packaged as a ready-to-run Docker image.**
 
@@ -82,7 +59,7 @@ The large files are not inside the image. They are hosted in one Zenodo record, 
 
 ---
 
-## Quick start
+## Docker Quick start
 
 You only need [Docker](https://docs.docker.com/get-docker/) installed. The image is public, so no login or account is required.
 
@@ -328,6 +305,23 @@ If you use SpeedNet, the models or the data, please cite the paper:
 > *Deep Learning-Based Prediction of High-Speed Solar Wind Streams: Spatio-Temporal Dependencies in Coronal Hole Dynamics.* Earth and Space Science. https://doi.org/10.1029/2025EA004523
 
 and the Zenodo record: https://doi.org/10.5281/zenodo.24564751
+
+## Github Files Description
+
+Find in this repo the files used for the analysis:
+
+1. Process the Solar wind speed using SW_Processing.
+2. Process the Maps using Image_Preprocess.
+3. Perform the Analysis:
+    - a. SpeedNet_EUV for the Three Channel EUV Model.
+    - b. SpeedNet_BM for the Binary Map Model.
+4. HSEMETRIC contains metrics for analyzing the Threat Score.
+5. To observe the Activation of the Model, utilize HSS ACtivation metrics.
+6. For Visualizing the Model Plot:
+    - HSS_Activation - HSSs_Activation_comparison_Analysis.
+    - Timeseries and GradCam for SpeedNet_BM and SpeedNet_EUV.
+---
+
 
 ## License
 
