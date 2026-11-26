@@ -6,7 +6,7 @@ This is a follow up resource for our Research Publication.
 ## Table of Contents
 
 - [About SpeedNet Model](#about-SpeedNet-Model)
-- [SpeedNet Docker Image Readme](#SpeedNet-DOCKER-README)
+- [SpeedNet Docker Image](#SpeedNet-Docker-Image)
 - [Repository overview](#Repository-overview)
 - [Docker Quick start](#Docker-Quick-start)
 - [Citation](#Citation)
@@ -21,7 +21,7 @@ The structure of the sun and it ability to influence the propagation of space pl
 ![Project Banner](./Image_processes.png)
 ---
 
-## SpeedNet Docker Image README
+## SpeedNet Docker Image
 
 **Deep-learning based prediction of high-speed solar wind streams strictly from solar atmosphere imagery, packaged as a ready-to-run Docker image.**
 
