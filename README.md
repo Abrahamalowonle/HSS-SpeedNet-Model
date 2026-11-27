@@ -135,9 +135,10 @@ Started with `-it` and no options, SpeedNet asks, in this order:
 1. **Model**: 1 = BM, 2 = EUV
 2. **Time resolution**: daily or hourly
 3. **Data locations**: "Use these default locations? [Y/n]". Answer `n` to type your own paths (Enter keeps a default).
-4. **Fold or no fold**: run the cross-validation fold models for the delay you choose next
-5. **Delay**: 1 to 5 days
-6. **Explainability**: XAI or no XAI
+4. **Time period**: start and end date, written `YYYY/MM/DD`. Press Enter at either prompt to use all available data.
+5. **Fold or no fold**: run the cross-validation fold models for the delay you choose next
+6. **Delay**: 1 to 5 days
+7. **Explainability**: XAI or no XAI
 
 ### Command-line options
 
@@ -155,6 +156,8 @@ docker run --rm -it ... jjaalowonle/the_speednet:latest --option 2 --delay 4 --c
 | `--images-dir` | Folder with the FITS images | `Image_data/SpeedNet_BM_Image` (option 1) or `Image_data/SpeedNet_EUV_Image` (option 2) |
 | `--solar-wind` | Solar wind speed CSV | `data/solar_wind_processed_speed_June_2020_July_2025.csv` |
 | `--icme` | ICME catalogue CSV | `data/Daily_Richardson_cane_icme_catlog_2020_2025.csv` |
+| `--start-date` | First solar-wind **arrival** date to use, written `YYYY/MM/DD` (e.g. `2021/01/01`) | first available date |
+| `--end-date` | Last solar-wind arrival date to use, written `YYYY/MM/DD` (this day is included) | last available date |
 | `--daily-hour` | UT hour of the daily image | `12` |
 | `--icme-filter` | `both`: drop a sample if the image time or the arrival time is inside an ICME. `arrival`: arrival time only | `both` |
 | `--folds` | Run the five cross-validation fold models | off |
@@ -167,6 +170,21 @@ docker run --rm -it ... jjaalowonle/the_speednet:latest --option 2 --delay 4 --c
 | `--xai-steps`, `--xai-max`, `--xai-from`, `--xai-to`, `--xai-png`, `--xai-last-conv` | Explainability settings (see below) | see below |
 
 Relative paths are relative to `/app` inside the container, so `--images-dir my_images/set2` means `/app/my_images/set2`.
+
+### Choosing a time period
+
+By default SpeedNet uses every date available in your files. To reproduce a result for a specific window, or to evaluate a new period, give a start and end date in `YYYY/MM/DD` format:
+
+```bash
+docker run --rm -it ... jjaalowonle/the_speednet:latest --option 1 --delay 3 --start-date 2022/01/01 --end-date 2022/12/31
+```
+
+- Dates refer to the solar-wind **arrival** date (image date + delay). Both the start and end day are included. For hourly data, the end day covers all 24 hours.
+- You can give only one of the two (an open-ended period).
+- A date in another format (`2022-01-01`, `2022/1/1`) or a date that does not exist (`2022/02/30`) is rejected with a clear message.
+- The period is applied before ICME removal. If no samples fall inside it, the run stops and tells you which dates are available.
+- Your solar-wind CSV, ICME catalogue and images must cover the period you request. To use dates outside June 2020 to July 2025, supply your own files with `--solar-wind`, `--icme` and `--images-dir`.
+
 
 ### Using your own data
 
